@@ -4,18 +4,14 @@ function createTimeControlWidget(table) {
     let currentGameSpeed = 0;
     // The speeds are power of 2.
     let speedRange = { lower: -1, upper: 2 };
+    let timeButton, timeSlider;
 
     table.table(Tex.buttonEdge3, (table) => {
         table.name = "tc-slidertable";
-        let timeSlider = new Slider(
-            speedRange.lower,
-            speedRange.upper,
-            1,
-            false,
-        );
+        timeSlider = new Slider(speedRange.lower, speedRange.upper, 1, false);
         timeSlider.setValue(0);
 
-        let timeButton = table
+        timeButton = table
             .button("[accent]x1", () => {
                 currentGameSpeed++;
                 if (currentGameSpeed > speedRange.upper)
@@ -58,7 +54,13 @@ function createTimeControlWidget(table) {
             timeButton.setText(toSpeedText(v));
         });
     });
-    table.visibility = () => getGUIVisibility();
+    table.visibility = () => {
+        if (!Vars.state.isGame() && timeSlider) {
+            // Exited the map
+            timeSlider.setValue(0);
+        }
+        return getGUIVisibility();
+    };
 }
 
 // FIXME: Seems like setting game speed breaks logic for many subsystems? This
@@ -82,9 +84,6 @@ function toSpeedText(speed) {
     return text;
 }
 
-// FIXME: Currently, the game speed doesn't get reset if the user exits out of
-// a map to the main menu or planet menu. And, with there being no way to reset
-// it from the UI since the widget is not visible there.
 function getGUIVisibility() {
     if (!Vars.ui.hudfrag.shown || Vars.ui.minimapfrag.shown()) return false;
     if (!Vars.mobile) return true;
