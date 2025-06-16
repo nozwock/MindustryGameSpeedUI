@@ -43,7 +43,6 @@ function createTimeControlWidget(table) {
             currentGameSpeed = v;
             setGameSpeed(v);
 
-            Tmp.c1.lerp(pinkColor, (timeSlider.getValue() + 8) / 16);
             timeButton.setText(toSpeedText(v));
         });
     });
