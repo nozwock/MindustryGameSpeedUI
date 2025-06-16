@@ -2,17 +2,28 @@ let pinkColor = [Pal.lancerLaser, Pal.accent, Color.valueOf("cc6eaf")]; //Pink f
 
 function createTimeControlWidget(table) {
     let currentGameSpeed = 0;
+    let speedRange = { lower: -1, upper: 2 };
 
     table.table(Tex.buttonEdge3, (table) => {
         table.name = "tc-slidertable";
-        let timeSlider = new Slider(-8, 8, 1, false);
+        let timeSlider = new Slider(
+            speedRange.lower,
+            speedRange.upper,
+            1,
+            false,
+        );
         timeSlider.setValue(0);
 
         let timeButton = table
             .button("[accent]x1", () => {
                 currentGameSpeed++;
-                if (currentGameSpeed > 2) currentGameSpeed = -2; // Cycling back
-                currentGameSpeed = Mathf.clamp(currentGameSpeed, -2, 2);
+                if (currentGameSpeed > speedRange.upper)
+                    currentGameSpeed = speedRange.lower; // Cycling back
+                currentGameSpeed = Mathf.clamp(
+                    currentGameSpeed,
+                    speedRange.lower,
+                    speedRange.upper,
+                );
 
                 // log("Time button callback", curSpeed);
                 timeSlider.setValue(currentGameSpeed);
