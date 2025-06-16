@@ -1,10 +1,10 @@
 {
-	"name": "game-speed-ui",
-	"displayName": "Game Speed UI",
-	"author": "sk7725, nozwock",
+    "name": "game-speed-ui",
+    "displayName": "Game Speed UI",
+    "author": "sk7725, nozwock",
     "description": "Control the game's speed using an in-game GUI located in the bottom-left corner.\n\nThis mod is a fork of Time Control.\n\n[scarlet[]]Disclaimer: Not intended for multiplayer.[white[]]",
     "repo": "nozwock/MindustryGameSpeedUI",
-	"version": "1.0.0",
-	"hidden": true,
-	"minGameVersion": 136
+    "version": "1.0.0",
+    "hidden": true,
+    "minGameVersion": 136
 }
