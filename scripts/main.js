@@ -2,6 +2,7 @@ let pinkColor = [Pal.lancerLaser, Pal.accent, Color.valueOf("cc6eaf")]; //Pink f
 
 function createTimeControlWidget(table) {
     let currentGameSpeed = 0;
+    // The speeds are power of 2.
     let speedRange = { lower: -1, upper: 2 };
 
     table.table(Tex.buttonEdge3, (table) => {
@@ -52,7 +53,7 @@ function createTimeControlWidget(table) {
         timeSlider.moved((v) => {
             // log("Slider callback", v);
             currentGameSpeed = v;
-            setGameSpeed(v);
+            setGameSpeed(Math.pow(2, v));
 
             timeButton.setText(toSpeedText(v));
         });
@@ -64,12 +65,12 @@ function createTimeControlWidget(table) {
 // pretty much seems to make the whole mod useless.
 // https://github.com/sk7725/TimeControl/issues/39
 function setGameSpeed(speed) {
-    let speed = Math.pow(2, speed);
     Time.setDeltaProvider(() =>
         Math.min(Core.graphics.getDeltaTime() * 60 * speed, 3 * speed),
     );
 }
 
+/// `speed` here is some power of 2.
 function toSpeedText(speed) {
     Tmp.c1.lerp(pinkColor, (speed + 8) / 16);
     let text = "[#" + Tmp.c1.toString() + "]";
