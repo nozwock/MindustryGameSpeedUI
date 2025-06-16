@@ -50,6 +50,9 @@ function createTimeControlWidget(table) {
     table.visibility = () => getGUIVisibility();
 }
 
+// FIXME: Seems like setting game speed breaks logic for many subsystems? This
+// pretty much seems to make the whole mod useless.
+// https://github.com/sk7725/TimeControl/issues/39
 function setGameSpeed(speed) {
     let speed = Math.pow(2, speed);
     Time.setDeltaProvider(() =>
@@ -68,6 +71,9 @@ function toSpeedText(speed) {
     return text;
 }
 
+// FIXME: Currently, the game speed doesn't get reset if the user exits out of
+// a map to the main menu or planet menu. And, with there being no way to reset
+// it from the UI since the widget is not visible there.
 function getGUIVisibility() {
     if (!Vars.ui.hudfrag.shown || Vars.ui.minimapfrag.shown()) return false;
     if (!Vars.mobile) return true;
