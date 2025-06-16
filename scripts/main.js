@@ -49,7 +49,7 @@ function createTimeControlWidget(table) {
             .get();
         resetButton.getStyle().imageUpColor = Pal.accent;
 
-        table.add(timeSlider).padLeft(6).minWidth(200);
+        table.add(timeSlider).padLeft(6).minWidth(132);
         timeSlider.moved((v) => {
             // log("Slider callback", v);
             currentGameSpeed = v;
