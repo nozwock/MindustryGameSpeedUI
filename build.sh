@@ -2,11 +2,12 @@
 
 SCRIPT_DIR="$(dirname -- "$(readlink -f -- "${BASH_SOURCE[0]}")")"
 
+BUILD_NAME_PREFIX="GameSpeedUI"
 COMMIT_HASH="$(git rev-parse --short @)"
 BUILD_DIR_PREFIX="$SCRIPT_DIR/build"
-BUILD_DIR="$BUILD_DIR_PREFIX/$COMMIT_HASH"
+BUILD_DIR="$BUILD_DIR_PREFIX/$BUILD_NAME_PREFIX-$COMMIT_HASH"
 
-ZIP_NAME="sk7725timecontrol.zip"
+ZIP_NAME="$BUILD_NAME_PREFIX.zip"
 ZIP_PATH="$BUILD_DIR_PREFIX/$ZIP_NAME"
 
 cleanup() {
