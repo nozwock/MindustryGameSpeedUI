@@ -6,10 +6,27 @@ function createTimeControlWidget(table) {
     let speedRange = { lower: -1, upper: 2 };
     let timeButton, timeSlider;
 
+    function setGameSpeedWithUI(v) {
+        currentGameSpeed = v;
+        if (timeButton) {
+            timeButton.setText(toSpeedText(v));
+        }
+        setGameSpeed(Math.pow(2, v));
+    }
+
     table.table(Tex.buttonEdge3, (table) => {
         table.name = "tc-slidertable";
-        timeSlider = new Slider(speedRange.lower, speedRange.upper, 1, false);
-        timeSlider.setValue(0);
+
+        // Don't display the slider on mobile
+        if (!Vars.mobile) {
+            timeSlider = new Slider(
+                speedRange.lower,
+                speedRange.upper,
+                1,
+                false,
+            );
+            timeSlider.setValue(0);
+        }
 
         timeButton = table
             .button("[accent]x1", () => {
@@ -23,7 +40,11 @@ function createTimeControlWidget(table) {
                 );
 
                 // log("Time button callback", curSpeed);
-                timeSlider.setValue(currentGameSpeed);
+                if (timeSlider) {
+                    timeSlider.setValue(currentGameSpeed);
+                } else {
+                    setGameSpeedWithUI(currentGameSpeed);
+                }
             })
             .grow()
             .width(10.5 * 8)
@@ -39,20 +60,23 @@ function createTimeControlWidget(table) {
         let resetButton = table
             .button(new TextureRegionDrawable(Icon.refresh), 24, () => {
                 // log("Reset button callback", 0);
-                timeSlider.setValue(0);
+                if (timeSlider) {
+                    timeSlider.setValue(0);
+                } else {
+                    setGameSpeedWithUI(0);
+                }
             })
             .padLeft(6)
             .get();
         resetButton.getStyle().imageUpColor = Pal.accent;
 
-        table.add(timeSlider).padLeft(6).minWidth(132);
-        timeSlider.moved((v) => {
-            // log("Slider callback", v);
-            currentGameSpeed = v;
-            setGameSpeed(Math.pow(2, v));
-
-            timeButton.setText(toSpeedText(v));
-        });
+        if (!Vars.mobile) {
+            table.add(timeSlider).padLeft(6).minWidth(132);
+            timeSlider.moved((v) => {
+                // log("Slider callback", v);
+                setGameSpeedWithUI(v);
+            });
+        }
     });
     table.visibility = () => {
         if (!Vars.state.isGame() && timeSlider) {
